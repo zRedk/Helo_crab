@@ -9,9 +9,24 @@ import SwiftUI
 import SpriteKit
 
 class StartScene: SKScene{
+    
     override func didMove(to view: SKView) {
         self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         scene?.scaleMode = .aspectFill
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches{
+            let lokation = touch.location(in: self)
+            let starNode = atPoint(lokation)
+            
+            if starNode.name == "startButton" {
+                let game = GameScene(size: self.size)
+                let transition = SKTransition.doorway(withDuration: 3)
+                
+                self.view?.presentScene(game, transition: transition)
+            }
+        }
     }
 }
 
