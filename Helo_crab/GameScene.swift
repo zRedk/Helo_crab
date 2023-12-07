@@ -25,11 +25,15 @@ class GameScene: SKScene{
         background.setScale(2.5)
         addChild (background)
         
-        ground.position = CGPoint(x: size.width / 2, y: 10)
+        ground.position = CGPoint(x: size.width / 2, y: -150)
         ground.zPosition = 5
         ground.setScale (15)
         addChild(ground)
         
+        player.position = CGPoint(x: size.width / 2, y: size.height / 8)
+        player.zPosition = 10
+        player.setScale(3.5)
+        addChild (player)
         
     }
     
