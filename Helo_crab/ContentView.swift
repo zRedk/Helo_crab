@@ -22,7 +22,7 @@ class StartScene: SKScene{
             
             if starNode.name == "startButton" {
                 let game = GameScene(size: self.size)
-                let transition = SKTransition.doorway(withDuration: 3)
+                let transition = SKTransition.flipVertical(withDuration: 0.5)
                 
                 self.view?.presentScene(game, transition: transition)
             }

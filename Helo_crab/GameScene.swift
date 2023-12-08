@@ -11,7 +11,7 @@ import SpriteKit
 class GameScene: SKScene, SKPhysicsContactDelegate{
     
     let background = SKSpriteNode(imageNamed: "Background")
-    let player = SKSpriteNode(imageNamed: "Image")
+    let player = SKSpriteNode(imageNamed: "crab40x40")
     let ground = SKSpriteNode(imageNamed: "Platform")
     let platform = SKSpriteNode(imageNamed: "Platform")
     
