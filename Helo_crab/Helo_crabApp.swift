@@ -6,6 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
+
+let ContainerConfiguration = ModelConfiguration(isStoredInMemoryOnly: false, allowsSave: true)
+
+let bestScoreContainer: ModelContainer = {
+    let schema = Schema([Leaderboard.self])
+    let container = try! ModelContainer(for: schema, configurations: ContainerConfiguration)
+    return container
+}()
+
 
 @main
 struct Helo_crabApp: App {
@@ -13,5 +23,6 @@ struct Helo_crabApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(bestScoreContainer)
     }
 }

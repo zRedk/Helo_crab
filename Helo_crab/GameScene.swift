@@ -7,8 +7,12 @@
 
 import Foundation
 import SpriteKit
+import SwiftUI
+
+
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
+    @Environment (\.modelContext) private var context
     
     let background = SKSpriteNode(imageNamed: "Background")
     let player = SKSpriteNode(imageNamed: "crab40x40")
