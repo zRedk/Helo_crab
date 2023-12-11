@@ -4,7 +4,7 @@ import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    let background = SKSpriteNode(imageNamed: "Background")
+    let background = SKSpriteNode(imageNamed: "background1")
     let player = SKSpriteNode(imageNamed: "crab80x80")
     let ground = SKSpriteNode(imageNamed: "Ground")
     let cameraNode = SKCameraNode()
@@ -29,13 +29,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         physicsWorld.contactDelegate = self
         
-        ground.position = CGPoint(x: size.width / 2, y: -280)
+        ground.position = CGPoint(x: size.width / 2, y: -45)
         ground.zPosition = 5
         ground.setScale(10)
         ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
         ground.physicsBody?.isDynamic = false
         ground.physicsBody?.allowsRotation = false
         ground.physicsBody?.affectedByGravity = false
+        ground.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
+        ground.physicsBody?.collisionBitMask = 0
+        ground.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
         addChild(ground)
         
         player.position = CGPoint(x: size.width / 2, y: size.height / 7)
@@ -60,16 +63,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Genera le prime 6 piattaforme
         makePlatform()
-        makePlatform2()
-        makePlatform3()
-        makePlatform4()
-        makePlatform5()
-        makePlatform6()
+//        makePlatform2()
+//        makePlatform3()
+//        makePlatform4()
+//        makePlatform5()
+//        makePlatform6()
     }
     
     override func update(_ currentTime: TimeInterval) {
         cameraNode.position.y = player.position.y
         
+        let yOffset = player.position.y - size.height / 4
+        background.position.y = yOffset
         // Se il giocatore ha sbloccato una nuova parte dello schermo, genera una nuova piattaforma
         if player.position.y > lastGeneratedPlatformY - size.height {
             generateNewPlatform()
@@ -113,9 +118,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func makePlatform() {
-        let platform = SKSpriteNode(imageNamed: "Platform")
+        let platform = SKSpriteNode(imageNamed: "abyssplatform")
         platform.position = CGPoint(x: GKRandomDistribution(lowestValue: Int(size.width * 0.1), highestValue: Int(size.width * 0.9)).nextInt(), y: GKRandomDistribution(lowestValue: 70, highestValue: 150).nextInt() + Int(player.position.y))
-        platform.setScale(2)
+        platform.setScale(1)
         platform.zPosition = 5
         platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
         platform.physicsBody?.isDynamic = false
@@ -128,10 +133,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func makePlatform2() {
-        let platform = SKSpriteNode(imageNamed: "Platform")
+        let platform = SKSpriteNode(imageNamed: "abyssplatform")
         platform.position = CGPoint(x: GKRandomDistribution(lowestValue: Int(size.width * 0.1), highestValue: Int(size.width * 0.9)).nextInt(), y: GKRandomDistribution(lowestValue: 200, highestValue: 300).nextInt() + Int(player.position.y))
         platform.zPosition = 5
-        platform.setScale(2)
+        platform.setScale(1)
         platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
         platform.physicsBody?.isDynamic = false
         platform.physicsBody?.allowsRotation = false
@@ -176,10 +181,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func generatePlatform(minY: Int, maxY: Int) -> SKSpriteNode {
-        let platform = SKSpriteNode(imageNamed: "Platform")
+        let platform = SKSpriteNode(imageNamed: "abyssplatform")
         platform.position = CGPoint(x: GKRandomDistribution(lowestValue: Int(size.width * 0.1), highestValue: Int(size.width * 0.9)).nextInt(), y: GKRandomDistribution(lowestValue: minY, highestValue: maxY).nextInt())
         platform.zPosition = 5
-        platform.setScale(2)
+        platform.setScale(1)
         platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
         platform.physicsBody?.isDynamic = false
         platform.physicsBody?.allowsRotation = false
