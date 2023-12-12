@@ -4,7 +4,11 @@ import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    let background = SKSpriteNode(imageNamed: "Background")
+    let background1 = SKSpriteNode(imageNamed: "background1")
+    let background2 = SKSpriteNode(imageNamed: "background2")
+    let background3 = SKSpriteNode(imageNamed: "background3")
+    let background4 = SKSpriteNode(imageNamed: "background4")
+
     let player = SKSpriteNode(imageNamed: "crab80x80")
     let ground = SKSpriteNode(imageNamed: "Ground")
     let cameraNode = SKCameraNode()
@@ -16,6 +20,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var score: Int = 0
     var bestScore: Int = 0
+    
+    var backgroundLayerHeight: CGFloat = 0.0
+    var backgroundScrollSpeed: CGFloat = 2.0
+    
+    var jumpCount = 0
+    var isBackground4Infinite = false
+
     
     enum bitmasks: UInt32 {
         case player = 0b1
@@ -29,10 +40,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.anchorPoint = .zero
         
-        background.position = CGPoint(x: size.width / 2, y: 500)
-        background.setScale(2)
-        background.zPosition = 1
-        addChild(background)
+        background1.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        background1.zPosition = 0
+        addChild(background1)
+        
+        background2.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        background2.zPosition = -1
+        addChild(background2)
+        
+        background3.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        background3.zPosition = -2
+        addChild(background3)
+        
+        background4.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        background4.zPosition = -2
+        addChild(background4)
+        
+        backgroundLayerHeight = player.position.y
+        
+        // Imposta l'altezza iniziale dei background oltre il quale diventano visibili
+        background2.position.y = size.height
+        background3.position.y = size.height * 2
+        background4.position.y = size.height * 3
         
         physicsWorld.contactDelegate = self
         
@@ -102,7 +131,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         cameraNode.position.y = player.position.y
         
-        background.position.y = player.position.y
+        // Aggiorna la posizione del background in base all'altezza del layer di sfondo
+        background1.position.y = backgroundLayerHeight
+        background2.position.y = backgroundLayerHeight + size.height
+        background3.position.y = backgroundLayerHeight + size.height * 2
+        background4.position.y = backgroundLayerHeight + size.height * 3
+
+        // Muovi lo sfondo verso l'alto solo se il giocatore si muove
+        if player.position.y > backgroundLayerHeight {
+            backgroundLayerHeight += backgroundScrollSpeed
+        }
+
+        // Se il giocatore ha raggiunto background4, rendilo infinito e mostra un nuovo background
+        if player.position.y > background4.position.y && !isBackground4Infinite {
+            background4.position.y += background4.size.height
+            isBackground4Infinite = true
+            showNewBackground()
+        }
         
         if player.physicsBody!.velocity.dy > 0 {
             playerOverTheLine.position.y = player.position.y - 500 //Passato questo si rimuove la piattaforma
@@ -148,6 +193,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.playerOverTheLine.rawValue {
             gameOver()
+        }
+    }
+    
+    func showNewBackground() {
+        jumpCount += 1
+
+        // Verifica quale background mostrare in base al numero totale di salti
+        if jumpCount >= 30 {
+            addChild(background2)
+        }
+
+        if jumpCount >= 70 {
+            addChild(background3)
+        }
+
+        if jumpCount >= 120 {
+            addChild(background4)
         }
     }
     
