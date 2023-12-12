@@ -13,8 +13,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let player = SKSpriteNode(imageNamed: "crab80x80")
     let ground = SKSpriteNode(imageNamed: "Ground")
     let cameraNode = SKCameraNode()
-    
+    let playerOverTheLine = SKSpriteNode(color: .red, size: CGSize(width: 1000, height: 7))
     var firstTouch = false
+    let scoreLabel = SKLabelNode()
+    let bestScoreLabel = SKLabelNode()
+    let defaults = UserDefaults.standard
+    
+    var score: Int = 0
+    var bestScore: Int = 0
     
     var backgroundLayerHeight: CGFloat = 0.0
     var backgroundScrollSpeed: CGFloat = 2.0
@@ -25,6 +31,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     enum bitmasks: UInt32 {
         case player = 0b1
         case platform = 0b10
+        case playerOverTheLine
     }
     
     var lastGeneratedPlatformY: CGFloat = 0.0
@@ -80,12 +87,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.angularDamping = 0
         player.physicsBody?.categoryBitMask = bitmasks.player.rawValue
         player.physicsBody?.collisionBitMask = 0
-        player.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue
+        player.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.playerOverTheLine.rawValue
         
         self.camera = cameraNode
         addChild(cameraNode)
         cameraNode.position = player.position
         addChild(player)
+        
+        //Linea per il game over
+        playerOverTheLine.position = CGPoint(x: player.position.x, y: player.position.y - 200)
+        playerOverTheLine.zPosition = -10
+        playerOverTheLine.physicsBody = SKPhysicsBody(rectangleOf: playerOverTheLine.size)
+        playerOverTheLine.physicsBody?.affectedByGravity = false
+        playerOverTheLine.physicsBody?.allowsRotation = false
+        playerOverTheLine.physicsBody?.categoryBitMask = bitmasks.playerOverTheLine.rawValue
+        playerOverTheLine.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.player.rawValue
+        addChild(playerOverTheLine)
+        
+        scoreLabel.position.x = 70
+        scoreLabel.zPosition = 20
+        scoreLabel.fontSize = 22
+        scoreLabel.fontName = "SF Pro"
+        scoreLabel.fontColor = .black
+        scoreLabel.text = "Score: \(score)"
+        addChild(scoreLabel)
+        
+        bestScore = defaults.integer(forKey: "best")
+        bestScoreLabel.position.x = 300
+        bestScoreLabel.zPosition = 20
+        bestScoreLabel.fontSize = 22
+        bestScoreLabel.fontName = "SF Pro"
+        bestScoreLabel.fontColor = .black
+        bestScoreLabel.text = "Best Score: \(bestScore)"
+        addChild(bestScoreLabel)
+        
+        
         
         // Imposta l'ultima piattaforma generata inizialmente
         lastGeneratedPlatformY = player.position.y
@@ -101,6 +137,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         cameraNode.position.y = player.position.y
+ ground/camera
 
         let yOffset = player.position.y - size.height / 4
 
@@ -122,10 +159,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             showNewBackground()
         }
 
+
+        
+        //background.position.y = player.position.y
+        
+        //if player.physicsBody!.velocity.dy > 0 {
+        //    playerOverTheLine.position.y = player.position.y - 500 //Passato questo si rimuove la piattaforma
+        //}
+        
+ main
         // Se il giocatore ha sbloccato una nuova parte dello schermo, genera una nuova piattaforma
         if player.position.y > lastGeneratedPlatformY - size.height {
             generateNewPlatform()
         }
+        
+        scoreLabel.position.y = player.position.y + 300
+        
+        bestScoreLabel.position.y = player.position.y + 300
+        
     }
     
     func showNewBackground() {
@@ -150,17 +201,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let contactB: SKPhysicsBody
         
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
-            contactA = contact.bodyA
-            contactB = contact.bodyB
+            contactA = contact.bodyA //player
+            contactB = contact.bodyB //platform
         } else {
-            contactA = contact.bodyB
-            contactB = contact.bodyA
+            contactA = contact.bodyB //player
+            contactB = contact.bodyA //platform
         }
+        //Questo serve a rimuovere la piattaforma
+        if contactA.categoryBitMask == bitmasks.platform.rawValue && contactB.categoryBitMask == bitmasks.playerOverTheLine.rawValue {
+            contactA.node?.removeFromParent()
+        }
+        
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.platform.rawValue {
             // Aumenta la dimensione del salto del giocatore
             if player.physicsBody!.velocity.dy < 0 {
                 player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 1000)
+                contactB.node?.removeFromParent()
+                makePlatform5()
+                makePlatform6()
+                
+                addScore()  
             }
+        }
+        
+        if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.playerOverTheLine.rawValue {
+            gameOver()
         }
     }
     
@@ -263,5 +328,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
         return platform
+    }
+    
+    func gameOver() {
+        
+        let gameOverScene = gameOverScene(size: size.self)
+        let transition = SKTransition.crossFade(withDuration: 0.5)
+        
+        view?.presentScene(gameOverScene, transition: transition)
+        
+        if score > bestScore {
+            bestScore = score
+            defaults.set(bestScore, forKey: "best")
+        }
+    }
+    
+    func addScore() {
+        score += 1
+        scoreLabel.text = "Score: \(score)"
     }
 }

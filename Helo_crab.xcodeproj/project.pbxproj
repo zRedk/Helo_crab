@@ -13,7 +13,7 @@
 		8ED62ED32B21FCEF0027CFAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8ED62ED22B21FCEF0027CFAF /* Preview Assets.xcassets */; };
 		8ED62EDA2B2201380027CFAF /* StartScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8ED62ED92B2201380027CFAF /* StartScene.sks */; };
 		8EF9418B2B2215F5002F39B2 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF9418A2B2215F5002F39B2 /* GameScene.swift */; };
-		F55264812B24B6E400A913D0 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55264802B24B6E400A913D0 /* Model.swift */; };
+		F576AD622B2887A300A76E33 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F576AD612B2887A300A76E33 /* GameOverScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,7 +24,7 @@
 		8ED62ED22B21FCEF0027CFAF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8ED62ED92B2201380027CFAF /* StartScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartScene.sks; sourceTree = "<group>"; };
 		8EF9418A2B2215F5002F39B2 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		F55264802B24B6E400A913D0 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		F576AD612B2887A300A76E33 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +60,7 @@
 				8ED62ECB2B21FCEE0027CFAF /* Helo_crabApp.swift */,
 				8ED62ECD2B21FCEE0027CFAF /* ContentView.swift */,
 				8EF9418A2B2215F5002F39B2 /* GameScene.swift */,
-				F552647F2B24B6C500A913D0 /* DatabaseAPP */,
+				F576AD612B2887A300A76E33 /* GameOverScene.swift */,
 				8ED62ED92B2201380027CFAF /* StartScene.sks */,
 				8ED62ECF2B21FCEF0027CFAF /* Assets.xcassets */,
 				8ED62ED12B21FCEF0027CFAF /* Preview Content */,
@@ -74,14 +74,6 @@
 				8ED62ED22B21FCEF0027CFAF /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		F552647F2B24B6C500A913D0 /* DatabaseAPP */ = {
-			isa = PBXGroup;
-			children = (
-				F55264802B24B6E400A913D0 /* Model.swift */,
-			);
-			path = DatabaseAPP;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,10 +147,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F576AD622B2887A300A76E33 /* GameOverScene.swift in Sources */,
 				8EF9418B2B2215F5002F39B2 /* GameScene.swift in Sources */,
 				8ED62ECE2B21FCEE0027CFAF /* ContentView.swift in Sources */,
 				8ED62ECC2B21FCEE0027CFAF /* Helo_crabApp.swift in Sources */,
-				F55264812B24B6E400A913D0 /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,7 +284,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Helo_crab/Preview Content\"";
+ ground/camera
 				DEVELOPMENT_TEAM = DM7YX3KF59;
+
+				DEVELOPMENT_TEAM = JZX85Z36BA;
+main
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.arcade-games";
@@ -305,7 +301,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+ground/camera
 				PRODUCT_BUNDLE_IDENTIFIER = "com.federicamosca.Helo-crab1";
+
+				PRODUCT_BUNDLE_IDENTIFIER = "com.salvatoreflauto.Helo-crab";
+ main
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -321,7 +321,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Helo_crab/Preview Content\"";
+ ground/camera
 				DEVELOPMENT_TEAM = DM7YX3KF59;
+
+				DEVELOPMENT_TEAM = JZX85Z36BA;
+ main
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.arcade-games";
@@ -334,7 +338,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.federicamosca.Helo-crab1";
+ground/camera
+				PRODUCT_BUNDLE_IDENTIFIER = "com.salvatoreflauto.Helo-crab";
+ main
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
