@@ -64,7 +64,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Linea per il game over
         playerOverTheLine.position = CGPoint(x: player.position.x, y: player.position.y - 200)
-        playerOverTheLine.zPosition = 10
+        playerOverTheLine.zPosition = -10
         playerOverTheLine.physicsBody = SKPhysicsBody(rectangleOf: playerOverTheLine.size)
         playerOverTheLine.physicsBody?.affectedByGravity = false
         playerOverTheLine.physicsBody?.allowsRotation = false
