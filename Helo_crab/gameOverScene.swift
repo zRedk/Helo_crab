@@ -9,8 +9,8 @@ import Foundation
 import SpriteKit
 
 class gameOverScene: SKScene {
-    let background = SKSpriteNode(imageNamed: "")
-    let gameOver = SKSpriteNode(imageNamed: "")
+    let background = SKSpriteNode(imageNamed: "stillcrab")
+    let gameOver = SKSpriteNode(imageNamed: "gameover")
     
     override func didMove(to view: SKView) {
         
@@ -18,7 +18,7 @@ class gameOverScene: SKScene {
         addChild(background)
         
         gameOver.position = CGPoint(x: size.width / 2, y: size.width / 2)
-        gameOver.setScale(1.6)
+        gameOver.setScale(3.2)
         gameOver.zPosition = -1
         addChild(gameOver)
         

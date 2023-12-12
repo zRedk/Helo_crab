@@ -96,11 +96,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Genera le prime 6 piattaforme
         makePlatform()
-        makePlatform2()
-        makePlatform3()
-        makePlatform4()
-        makePlatform5()
-        makePlatform6()
+        
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -144,8 +140,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if player.physicsBody!.velocity.dy < 0 {
                 player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 1000)
                 contactB.node?.removeFromParent()
-                makePlatform5()
-                makePlatform6()
+
                 
                 addScore()  
             }
@@ -185,41 +180,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        addChild(platform)
-    }
-    
-    func makePlatform2() {
-        let platform = SKSpriteNode(imageNamed: "Platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: Int(size.width * 0.1), highestValue: Int(size.width * 0.9)).nextInt(), y: GKRandomDistribution(lowestValue: 200, highestValue: 300).nextInt() + Int(player.position.y))
-        platform.zPosition = 5
-        platform.setScale(2)
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        addChild(platform)
-    }
-    
-    func makePlatform3() {
-        let platform = generatePlatform(minY: Int(player.position.y) + 350, maxY: Int(player.position.y) + 450)
-        addChild(platform)
-    }
-    
-    func makePlatform4() {
-        let platform = generatePlatform(minY: Int(player.position.y) + 500, maxY: Int(player.position.y) + 600)
-        addChild(platform)
-    }
-    
-    func makePlatform5() {
-        let platform = generatePlatform(minY: Int(player.position.y) + 650, maxY: Int(player.position.y) + 750)
-        addChild(platform)
-    }
-    
-    func makePlatform6() {
-        let platform = generatePlatform(minY: Int(player.position.y) + 700, maxY: Int(player.position.y) + 900)
         addChild(platform)
     }
     
