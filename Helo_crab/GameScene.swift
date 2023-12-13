@@ -278,12 +278,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         
                         // Determina se la piattaforma trappola si muove da destra a sinistra o viceversa
                         let movesLeft = Bool.random()
-                        let randomX = movesLeft ?
-                            CGFloat.random(in: size.width * 0.5...size.width * 0.9) :
-                            CGFloat.random(in: size.width * 0.1...size.width * 0.5)
-                        
-                        let startX = movesLeft ? size.width : 0
-                        let endX = movesLeft ? 0 : size.width
+                
+                        let startX = movesLeft ? CGFloat.random(in: size.width * 0.5...size.width * 0.9) : 0
+                        let endX = movesLeft ? 0 : CGFloat.random(in: size.width * 0.1...size.width * 0.5)
                         
                         // Calcola la durata del movimento in base allo score
                         let baseDuration: TimeInterval = 2.0
