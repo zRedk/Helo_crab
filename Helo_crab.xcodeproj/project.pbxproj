@@ -57,11 +57,11 @@
 		8ED62ECA2B21FCEE0027CFAF /* Helo_crab */ = {
 			isa = PBXGroup;
 			children = (
+				CC1C8E022B2A15C600BC9485 /* Sounds */,
 				8ED62ECB2B21FCEE0027CFAF /* Helo_crabApp.swift */,
 				8ED62ECD2B21FCEE0027CFAF /* ContentView.swift */,
 				8EF9418A2B2215F5002F39B2 /* GameScene.swift */,
 				F576AD612B2887A300A76E33 /* GameOverScene.swift */,
-				F5C766172B2A0DB700EAC961 /* Sounds */,
 				8ED62ED92B2201380027CFAF /* StartScene.sks */,
 				8ED62ECF2B21FCEF0027CFAF /* Assets.xcassets */,
 				8ED62ED12B21FCEF0027CFAF /* Preview Content */,
@@ -77,7 +77,7 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		F5C766172B2A0DB700EAC961 /* Sounds */ = {
+		CC1C8E022B2A15C600BC9485 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
 			);
