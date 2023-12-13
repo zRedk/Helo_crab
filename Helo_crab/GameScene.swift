@@ -8,7 +8,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let background2 = SKSpriteNode(imageNamed: "background2")
     let background3 = SKSpriteNode(imageNamed: "background3")
     let background4 = SKSpriteNode(imageNamed: "background4")
-
+    
     let player = SKSpriteNode(imageNamed: "crab80x80")
     let ground = SKSpriteNode(imageNamed: "Ground")
     let cameraNode = SKCameraNode()
@@ -26,7 +26,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var jumpCount = 0
     var isBackground4Infinite = false
-
+    
     
     enum bitmasks: UInt32 {
         case player = 0b1
@@ -126,6 +126,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Genera le prime 6 piattaforme
         makePlatform()
         
+        
+        
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -136,12 +138,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         background2.position.y = backgroundLayerHeight + size.height
         background3.position.y = backgroundLayerHeight + size.height * 2
         background4.position.y = backgroundLayerHeight + size.height * 3
-
+        
         // Muovi lo sfondo verso l'alto solo se il giocatore si muove
         if player.position.y > backgroundLayerHeight {
             backgroundLayerHeight += backgroundScrollSpeed
         }
-
+        
         // Se il giocatore ha raggiunto background4, rendilo infinito e mostra un nuovo background
         if player.position.y > background4.position.y && !isBackground4Infinite {
             background4.position.y += background4.size.height
@@ -162,6 +164,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         bestScoreLabel.position.y = player.position.y + 300
         
+        // Aumenta la gravità
+        increaseDifficulty()
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -185,9 +189,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if player.physicsBody!.velocity.dy < 0 {
                 player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 1000)
                 contactB.node?.removeFromParent()
-
                 
-                addScore()  
+                
+                addScore()
             }
         }
         
@@ -198,16 +202,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func showNewBackground() {
         jumpCount += 1
-
+        
         // Verifica quale background mostrare in base al numero totale di salti
         if jumpCount >= 30 {
             addChild(background2)
         }
-
+        
         if jumpCount >= 70 {
             addChild(background3)
         }
-
+        
         if jumpCount >= 120 {
             addChild(background4)
         }
@@ -251,8 +255,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         
-        let minY = Int(lastGeneratedPlatformY) + 200
-        let maxY = minY + 100
+        let minY = Int(lastGeneratedPlatformY) + 270
+        let maxY = minY + 10
         let platform = generatePlatform(minY: minY, maxY: maxY)
         lastGeneratedPlatformY = platform.position.y
         addChild(platform)
@@ -290,4 +294,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         score += 1
         scoreLabel.text = "Score: \(score)"
     }
+    
+    func increaseDifficulty() {
+        switch score {
+        case 0...5:
+            physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
+        case 6...10:
+            physicsWorld.gravity = CGVector(dx: 0, dy: -10.4)
+        case 11...15:
+            physicsWorld.gravity = CGVector(dx: 0, dy: -10.6)
+        default:
+            physicsWorld.gravity = CGVector(dx: 0, dy: -10.9)
+        }
+        print("\(String(describing: player.scene?.physicsWorld.gravity.dy))")
+    }
+    
+    
+    
 }
