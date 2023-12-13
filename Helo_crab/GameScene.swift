@@ -322,16 +322,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func increaseDifficulty() {
         switch score {
-        case 0...5:
+        case 0...10:
             physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
-        case 6...10:
-            physicsWorld.gravity = CGVector(dx: 0, dy: -10.4)
-        case 11...15:
-            physicsWorld.gravity = CGVector(dx: 0, dy: -10.6)
+        case 11...25:
+            physicsWorld.gravity = CGVector(dx: 0, dy: -10.2)
+        case 26...40:
+            physicsWorld.gravity = CGVector(dx: 0, dy: -10.5)
         default:
-            physicsWorld.gravity = CGVector(dx: 0, dy: -10.9)
+            physicsWorld.gravity = CGVector(dx: 0, dy: -10.8)
         }
-        print("\(String(describing: player.scene?.physicsWorld.gravity.dy))")
+        
     }
     
     
