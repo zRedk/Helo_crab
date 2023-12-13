@@ -66,7 +66,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         physicsWorld.contactDelegate = self
         
-        ground.position = CGPoint(x: size.width / 2, y: background1.position.y - background1.size.height / 6)
+        ground.position = CGPoint(x: size.width / 2, y: size.height / 65)
         ground.zPosition = 5
         ground.setScale(10)
         ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
@@ -75,7 +75,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground.physicsBody?.affectedByGravity = false
         addChild(ground)
         
-        player.position = CGPoint(x: size.width / 2, y: ground.position.y + player.size.height / 4)
+        player.position = CGPoint(x: size.width / 2, y: size.height / 5)
         player.zPosition = 10
         player.setScale(0.5)
         player.physicsBody = SKPhysicsBody(circleOfRadius: player.size.height / 2)
@@ -90,7 +90,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.camera = cameraNode
         addChild(cameraNode)
-        cameraNode.position = CGPoint(x: size.width / 2, y: size.height / 6)
+        cameraNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
         
         
         addChild(player)
@@ -136,7 +136,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         
-        let centerYThreshold: CGFloat = size.height / 4
+        let centerYThreshold: CGFloat = size.height / 2
 
         let isMovingUp = player.position.y > lastPlayerYPosition
 
