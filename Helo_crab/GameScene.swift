@@ -8,6 +8,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let background2 = SKSpriteNode(imageNamed: "background2")
     let background3 = SKSpriteNode(imageNamed: "background3")
     let background4 = SKSpriteNode(imageNamed: "background4")
+    
 
     let player = SKSpriteNode(imageNamed: "crab80x80")
     let ground = SKSpriteNode(imageNamed: "Ground")
@@ -85,6 +86,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.categoryBitMask = bitmasks.player.rawValue
         player.physicsBody?.collisionBitMask = 0
         player.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.playerOverTheLine.rawValue
+        
         
         self.camera = cameraNode
         addChild(cameraNode)
@@ -259,19 +261,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func generatePlatform(minY: Int, maxY: Int) -> SKSpriteNode {
-        let platform = SKSpriteNode(imageNamed: "Platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: Int(size.width * 0.1), highestValue: Int(size.width * 0.9)).nextInt(), y: GKRandomDistribution(lowestValue: minY, highestValue: maxY).nextInt())
-        platform.zPosition = 5
-        platform.setScale(2)
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        return platform
-    }
+            let platform = SKSpriteNode(imageNamed: "Platform")
+            
+            // Aggiungi una probabilità di generare piattaforme trappola in base allo score
+            let trapPlatformProbability = CGFloat(score) / 100.0 // Modifica il valore 100 come preferisci
+            let isTrapPlatform = CGFloat.random(in: 0.0...1.0) < trapPlatformProbability
+            
+            // Verifica se è una piattaforma trappola e aggiungi il movimento da destra a sinistra
+            if isTrapPlatform {
+                platform.texture = SKTexture(imageNamed: "Platform") // Usa l'immagine della piattaforma normale
+                let moveLeft = SKAction.moveTo(x: 400, duration: 2.0) // Imposta la velocità e la direzione del movimento
+                let moveRight = SKAction.moveTo(x: 0, duration: 2.0)
+                let moveSequence = SKAction.sequence([moveLeft, moveRight])
+                let moveForever = SKAction.repeatForever(moveSequence)
+                platform.run(moveForever)
+            } else {
+                platform.texture = SKTexture(imageNamed: "Platform")
+            }
+            
+            // Imposta il posizionamento della piattaforma
+            let platformX = GKRandomDistribution(lowestValue: Int(size.width * 0.1), highestValue: Int(size.width * 0.9)).nextInt()
+            let platformY = isTrapPlatform ? maxY - 50 : GKRandomDistribution(lowestValue: minY, highestValue: maxY).nextInt()
+            platform.position = CGPoint(x: platformX, y: platformY)
+            
+            // Imposta la categoria della piattaforma
+            platform.zPosition = 5
+            platform.setScale(2)
+            platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
+            platform.physicsBody?.isDynamic = false
+            platform.physicsBody?.allowsRotation = false
+            platform.physicsBody?.affectedByGravity = false
+            platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
+            platform.physicsBody?.collisionBitMask = 0
+            platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+            
+            return platform
+        }
     
     func gameOver() {
         
