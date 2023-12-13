@@ -273,6 +273,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             // Verifica se è una piattaforma trappola e aggiungi il movimento da destra a sinistra
             if isTrapPlatform {
+                
                 platform.texture = SKTexture(imageNamed: "Platform") // Usa l'immagine della piattaforma normale
                 let moveLeft = SKAction.moveTo(x: 400, duration: 2.0) // Imposta la velocità e la direzione del movimento
                 let moveRight = SKAction.moveTo(x: 0, duration: 2.0)
@@ -322,11 +323,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func increaseDifficulty() {
         switch score {
-        case 0...10:
+        case 0...30:
             physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
-        case 11...25:
+        case 31...60:
             physicsWorld.gravity = CGVector(dx: 0, dy: -10.2)
-        case 26...40:
+        case 61...90:
             physicsWorld.gravity = CGVector(dx: 0, dy: -10.5)
         default:
             physicsWorld.gravity = CGVector(dx: 0, dy: -10.8)
