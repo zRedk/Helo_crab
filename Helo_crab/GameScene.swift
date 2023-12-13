@@ -264,17 +264,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let platform = SKSpriteNode(imageNamed: "Platform")
             
             // Aggiungi una probabilità di generare piattaforme trappola in base allo score
-            let trapPlatformProbability = CGFloat(score) / 100.0 // Modifica il valore 100 come preferisci
+            let trapPlatformProbability = CGFloat(score) / 300.0 // Modifica il valore 100 come preferisci
             let isTrapPlatform = CGFloat.random(in: 0.0...1.0) < trapPlatformProbability
             
             // Verifica se è una piattaforma trappola e aggiungi il movimento da destra a sinistra
             if isTrapPlatform {
                 platform.texture = SKTexture(imageNamed: "Platform") // Usa l'immagine della piattaforma normale
-                let moveLeft = SKAction.moveTo(x: 400, duration: 2.0) // Imposta la velocità e la direzione del movimento
-                let moveRight = SKAction.moveTo(x: 0, duration: 2.0)
-                let moveSequence = SKAction.sequence([moveLeft, moveRight])
-                let moveForever = SKAction.repeatForever(moveSequence)
-                platform.run(moveForever)
+                        
+                        // Determina se la piattaforma trappola si muove da destra a sinistra o viceversa
+                        let movesLeft = Bool.random()
+                        let randomX = movesLeft ?
+                            CGFloat.random(in: size.width * 0.5...size.width * 0.9) :
+                            CGFloat.random(in: size.width * 0.1...size.width * 0.5)
+                        
+                        let startX = movesLeft ? size.width : 0
+                        let endX = movesLeft ? 0 : size.width
+                        
+                        // Calcola la durata del movimento in base allo score
+                        let baseDuration: TimeInterval = 2.0
+                        let speedMultiplier = 2 + CGFloat(score) / 1000.0 // Modifica 1000 come preferisci per regolare la velocità
+                        let duration = baseDuration / Double(speedMultiplier)
+                        
+                        let movePlatform = SKAction.moveTo(x: endX, duration: duration)
+                        let moveBack = SKAction.moveTo(x: startX, duration: duration)
+                        let moveSequence = SKAction.sequence([movePlatform, moveBack])
+                        let moveForever = SKAction.repeatForever(moveSequence)
+                        platform.run(moveForever)
             } else {
                 platform.texture = SKTexture(imageNamed: "Platform")
             }
