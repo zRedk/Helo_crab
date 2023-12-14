@@ -103,11 +103,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playerOverTheLine.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.player.rawValue
         addChild(playerOverTheLine)
         
+        
         scoreLabel.position.x = 70
         scoreLabel.zPosition = 20
         scoreLabel.fontSize = 22
         scoreLabel.fontName = "SF Pro"
-        scoreLabel.fontColor = .black
+        scoreLabel.fontColor = .white
         scoreLabel.text = "Score: \(score)"
         addChild(scoreLabel)
         
@@ -116,7 +117,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bestScoreLabel.zPosition = 20
         bestScoreLabel.fontSize = 22
         bestScoreLabel.fontName = "SF Pro"
-        bestScoreLabel.fontColor = .black
+        bestScoreLabel.fontColor = .white
         bestScoreLabel.text = "Best Score: \(bestScore)"
         addChild(bestScoreLabel)
         
@@ -347,6 +348,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    
-    
 }
+
