@@ -6,6 +6,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var lastPlayerYPosition: CGFloat = 0.0
     
+    var backgrounds: [SKSpriteNode] = []
+    let parallaxSpeeds: [CGFloat] = [0.1, 0.2, 0.3, 0.4] // Velocità degli sfondi
+
+    
     let background1 = SKSpriteNode(imageNamed: "background1")
     let background2 = SKSpriteNode(imageNamed: "background2")
     let background3 = SKSpriteNode(imageNamed: "background3")
@@ -42,22 +46,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var lastGeneratedPlatformY: CGFloat = 0.0
     
     override func didMove(to view: SKView) {
+        
+        //background inizio
         self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.anchorPoint = .zero
 
-        //BACKGROUND INIZIO
-        
-        // Aggiungi gli sfondi al nodo principale degli sfondi
-        backgroundNode.addChild(background1)
-        backgroundNode.addChild(background2)
-        backgroundNode.addChild(background3)
-        backgroundNode.addChild(background4)
-
-        // Posiziona gli sfondi in sequenza
-        background1.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background2.position = CGPoint(x: size.width / 2, y: background1.size.height)
-        background3.position = CGPoint(x: size.width / 2, y: background1.size.height + background2.size.height)
-        background4.position = CGPoint(x: size.width / 2, y: background1.size.height + background2.size.height + background3.size.height)
+        // Aggiungi gli sfondi al nodo principale degli sfondi con effetto parallasse
+        for (index, speed) in parallaxSpeeds.enumerated() {
+            let background = createBackground(imageNamed: "background\(index + 1)", speed: speed, index: index)
+            backgrounds.append(background)
+        }
 
         // Aggiungi il nodo principale degli sfondi alla scena
         addChild(backgroundNode)
@@ -135,48 +133,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        
         let centerYThreshold: CGFloat = size.height / 2
-
         let isMovingUp = player.position.y > lastPlayerYPosition
 
-            if isMovingUp && player.position.y > centerYThreshold {
-                cameraNode.position.y = player.position.y
-            }
-            lastPlayerYPosition = player.position.y
-        
-        // Muovi il nodo principale degli sfondi per far scorrere gli sfondi verticalmente
-        let yOffset = player.position.y - size.height / 4
-        backgroundNode.position.y = -yOffset
-
-        // Gestisci la transizione tra background1 e background2 solo se il punteggio è maggiore di 30
-        if score >= 30 && !isTransitioningBackground && player.position.y > background2.position.y {
-            isTransitioningBackground = true
-            transitionToNextBackground()
+        if isMovingUp && player.position.y > centerYThreshold {
+            cameraNode.position.y = player.position.y
         }
-        // Gestisci la transizione tra background4 e il reset dell'infinito scrolling
-             if player.position.y > background4.position.y {
-                 resetInfiniteScrolling()
-             }
+        lastPlayerYPosition = player.position.y
 
 
+        // Muovi gli sfondi con effetto parallasse verticalmente
+        for (index, background) in backgrounds.enumerated() {
+            let speed = parallaxSpeeds[index]
+            let yOffset = background.physicsBody?.velocity.dy ?? 0
+
+            background.position.y += yOffset
+        }
         
+        updateBackgrounds()
+
         if player.physicsBody!.velocity.dy > 0 {
-            playerOverTheLine.position.y = player.position.y - 500 //Passato questo si rimuove la piattaforma
+            playerOverTheLine.position.y = player.position.y - 500
         }
-        
-        // Se il giocatore ha sbloccato una nuova parte dello schermo, genera una nuova piattaforma
+
         if player.position.y > lastGeneratedPlatformY - size.height {
             generateNewPlatform()
         }
-        
+
         scoreLabel.position.y = player.position.y + 300
-        
         bestScoreLabel.position.y = player.position.y + 300
-        
-        // Aumenta la gravità
+
         increaseDifficulty()
     }
+
     
     func didBegin(_ contact: SKPhysicsContact) {
         let contactA: SKPhysicsBody
@@ -210,23 +199,47 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    //INIZOO
-    func transitionToNextBackground() {
-        let moveAction = SKAction.moveTo(y: background2.position.y - background1.size.height, duration: 1.0)
-        let resetAction = SKAction.run {
-            self.background1.position.y = 0
-            self.isTransitioningBackground = false
+    // INIZO
+    // Modifica della funzione createBackground
+    func createBackground(imageNamed name: String, speed: CGFloat, index: Int) -> SKSpriteNode {
+        let background = SKSpriteNode(imageNamed: name)
+        background.zPosition = -1
+        background.anchorPoint = CGPoint.zero
+        background.alpha = 0.8
+        background.physicsBody = SKPhysicsBody(rectangleOf: background.size)
+        background.physicsBody?.isDynamic = false
+        background.physicsBody?.allowsRotation = false
+        background.physicsBody?.affectedByGravity = false
+
+        // Posiziona inizialmente lo sfondo in modo che il suo centro sia al centro della scena
+        background.position.x = size.width / 2 - background.size.width / 2
+        background.position.y = CGFloat(index) * background.size.height
+
+        backgroundNode.addChild(background)
+
+        return background
+    }
+
+    // Aggiungi questa funzione per rimuovere gli sfondi che sono fuori dallo schermo
+    func updateBackgrounds() {
+        let minY = cameraNode.position.y - size.height / 2
+        let maxY = cameraNode.position.y + size.height / 2
+
+        // Rimuovi gli sfondi che sono completamente al di sopra dello schermo
+        backgrounds = backgrounds.filter { background in
+            return background.position.y + background.size.height > minY
         }
-        let sequence = SKAction.sequence([moveAction, resetAction])
-        background1.run(sequence)
+
+        // Aggiungi nuovi sfondi alla fine se necessario
+        while let lastBackground = backgrounds.last, lastBackground.position.y < maxY {
+            let newBackground = createBackground(imageNamed: "background4", speed: 0.4, index: backgrounds.count)
+            newBackground.position.y = lastBackground.position.y + lastBackground.size.height
+            backgrounds.append(newBackground)
+        }
     }
-    
-    
-    func resetInfiniteScrolling() {
-        let yOffset = background4.position.y + background4.size.height
-        background4.position.y = background1.position.y - yOffset
-    }
-    //FINE
+
+
+    // FINE
     
 
     
