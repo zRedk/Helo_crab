@@ -160,9 +160,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             generateNewPlatform()
         }
 
-        scoreLabel.position.y = player.position.y + 300
-        bestScoreLabel.position.y = player.position.y + 300
-
+        scoreLabel.position.y = cameraNode.position.y + size.height / 2 - 90
+        bestScoreLabel.position.y = cameraNode.position.y + size.height / 2 - 90
         increaseDifficulty()
     }
 
