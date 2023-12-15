@@ -4,11 +4,19 @@ import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    var lastPlayerYPosition: CGFloat = 0.0
+    
+    var backgrounds: [SKSpriteNode] = []
+    let parallaxSpeeds: [CGFloat] = [0.1, 0.2, 0.3, 0.4] // Velocità degli sfondi
+
+    
     let background1 = SKSpriteNode(imageNamed: "background1")
     let background2 = SKSpriteNode(imageNamed: "background2")
     let background3 = SKSpriteNode(imageNamed: "background3")
     let background4 = SKSpriteNode(imageNamed: "background4")
     
+    let backgroundNode = SKNode()
+    var isTransitioningBackground = false
 
     let player = SKSpriteNode(imageNamed: "crab80x80")
     let ground = SKSpriteNode(imageNamed: "Ground")
@@ -23,7 +31,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var bestScore: Int = 0
     
     var backgroundLayerHeight: CGFloat = 0.0
-    var backgroundScrollSpeed: CGFloat = 2.0
+    var backgroundScrollSpeed: CGFloat = 0.5
     
     var jumpCount = 0
     var isBackground4Infinite = false
@@ -38,35 +46,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var lastGeneratedPlatformY: CGFloat = 0.0
     
     override func didMove(to view: SKView) {
+        
+        //background inizio
         self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.anchorPoint = .zero
+
+        // Aggiungi gli sfondi al nodo principale degli sfondi con effetto parallasse
+        for (index, speed) in parallaxSpeeds.enumerated() {
+            let background = createBackground(imageNamed: "background\(index + 1)", speed: speed, index: index)
+            backgrounds.append(background)
+        }
+
+        // Aggiungi il nodo principale degli sfondi alla scena
+        addChild(backgroundNode)
         
-        background1.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background1.zPosition = 0
-        addChild(background1)
-        
-        background2.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background2.zPosition = -1
-        addChild(background2)
-        
-        background3.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background3.zPosition = -2
-        addChild(background3)
-        
-        background4.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background4.zPosition = -2
-        addChild(background4)
-        
-        backgroundLayerHeight = player.position.y
-        
-        // Imposta l'altezza iniziale dei background oltre il quale diventano visibili
-        background2.position.y = size.height
-        background3.position.y = size.height * 2
-        background4.position.y = size.height * 3
+        //BACKGROUND FINE
         
         physicsWorld.contactDelegate = self
         
-        ground.position = CGPoint(x: size.width / 2, y: -280)
+        ground.position = CGPoint(x: size.width / 2, y: size.height / 65)
         ground.zPosition = 5
         ground.setScale(10)
         ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
@@ -75,7 +73,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground.physicsBody?.affectedByGravity = false
         addChild(ground)
         
-        player.position = CGPoint(x: size.width / 2, y: size.height / 7)
+        player.position = CGPoint(x: size.width / 2, y: size.height / 5)
         player.zPosition = 10
         player.setScale(0.5)
         player.physicsBody = SKPhysicsBody(circleOfRadius: player.size.height / 2)
@@ -90,7 +88,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.camera = cameraNode
         addChild(cameraNode)
-        cameraNode.position = player.position
+        cameraNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        
+        
         addChild(player)
         
         //Linea per il game over
@@ -133,42 +133,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        cameraNode.position.y = player.position.y
-        
-        // Aggiorna la posizione del background in base all'altezza del layer di sfondo
-        background1.position.y = backgroundLayerHeight
-        background2.position.y = backgroundLayerHeight + size.height
-        background3.position.y = backgroundLayerHeight + size.height * 2
-        background4.position.y = backgroundLayerHeight + size.height * 3
-        
-        // Muovi lo sfondo verso l'alto solo se il giocatore si muove
-        if player.position.y > backgroundLayerHeight {
-            backgroundLayerHeight += backgroundScrollSpeed
+        let centerYThreshold: CGFloat = size.height / 2
+        let isMovingUp = player.position.y > lastPlayerYPosition
+
+        if isMovingUp && player.position.y > centerYThreshold {
+            cameraNode.position.y = player.position.y
+        }
+        lastPlayerYPosition = player.position.y
+
+
+        // Muovi gli sfondi con effetto parallasse verticalmente
+        for (_ , background) in backgrounds.enumerated() {
+           
+            let yOffset = background.physicsBody?.velocity.dy ?? 0
+
+            background.position.y += yOffset
         }
         
-        // Se il giocatore ha raggiunto background4, rendilo infinito e mostra un nuovo background
-        if player.position.y > background4.position.y && !isBackground4Infinite {
-            background4.position.y += background4.size.height
-            isBackground4Infinite = true
-            showNewBackground()
-        }
-        
+        updateBackgrounds()
+
         if player.physicsBody!.velocity.dy > 0 {
-            playerOverTheLine.position.y = player.position.y - 500 //Passato questo si rimuove la piattaforma
+            playerOverTheLine.position.y = player.position.y - 500
         }
-        
-        // Se il giocatore ha sbloccato una nuova parte dello schermo, genera una nuova piattaforma
+
         if player.position.y > lastGeneratedPlatformY - size.height {
             generateNewPlatform()
         }
-        
-        scoreLabel.position.y = player.position.y + 300
-        
-        bestScoreLabel.position.y = player.position.y + 300
-        
-        // Aumenta la gravità
+
+        scoreLabel.position.y = cameraNode.position.y + size.height / 2 - 90
+        bestScoreLabel.position.y = cameraNode.position.y + size.height / 2 - 90
         increaseDifficulty()
     }
+
     
     func didBegin(_ contact: SKPhysicsContact) {
         let contactA: SKPhysicsBody
@@ -202,22 +198,49 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func showNewBackground() {
-        jumpCount += 1
-        
-        // Verifica quale background mostrare in base al numero totale di salti
-        if jumpCount >= 30 {
-            addChild(background2)
+    // INIZO
+    // Modifica della funzione createBackground
+    func createBackground(imageNamed name: String, speed: CGFloat, index: Int) -> SKSpriteNode {
+        let background = SKSpriteNode(imageNamed: name)
+        background.zPosition = -1
+        background.anchorPoint = CGPoint.zero
+        background.alpha = 0.8
+        background.physicsBody = SKPhysicsBody(rectangleOf: background.size)
+        background.physicsBody?.isDynamic = false
+        background.physicsBody?.allowsRotation = false
+        background.physicsBody?.affectedByGravity = false
+
+        // Posiziona inizialmente lo sfondo in modo che il suo centro sia al centro della scena
+        background.position.x = size.width / 2 - background.size.width / 2
+        background.position.y = CGFloat(index) * background.size.height
+
+        backgroundNode.addChild(background)
+
+        return background
+    }
+
+    // Aggiungi questa funzione per rimuovere gli sfondi che sono fuori dallo schermo
+    func updateBackgrounds() {
+        let minY = cameraNode.position.y - size.height / 2
+        let maxY = cameraNode.position.y + size.height / 2
+
+        // Rimuovi gli sfondi che sono completamente al di sopra dello schermo
+        backgrounds = backgrounds.filter { background in
+            return background.position.y + background.size.height > minY
         }
-        
-        if jumpCount >= 70 {
-            addChild(background3)
-        }
-        
-        if jumpCount >= 120 {
-            addChild(background4)
+
+        // Aggiungi nuovi sfondi alla fine se necessario
+        while let lastBackground = backgrounds.last, lastBackground.position.y < maxY {
+            let newBackground = createBackground(imageNamed: "background4", speed: 0.4, index: backgrounds.count)
+            newBackground.position.y = lastBackground.position.y + lastBackground.size.height
+            backgrounds.append(newBackground)
         }
     }
+
+
+    // FINE
+    
+
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
