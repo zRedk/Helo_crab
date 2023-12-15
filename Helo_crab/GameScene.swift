@@ -367,10 +367,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         default:
             physicsWorld.gravity = CGVector(dx: 0, dy: -10.8)
         }
-        
     }
-    
-    
-    
 }
+
+
 

@@ -24,7 +24,7 @@
 		8ED62ECF2B21FCEF0027CFAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8ED62ED22B21FCEF0027CFAF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8ED62ED92B2201380027CFAF /* StartScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartScene.sks; sourceTree = "<group>"; };
-		8EF9418A2B2215F5002F39B2 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		8EF9418A2B2215F5002F39B2 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
 		F576AD612B2887A300A76E33 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		F5D877C42B2C6A89003884B4 /* DigitalDisco.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DigitalDisco.ttf; sourceTree = "<group>"; };
 		F5F6ECA72B2B5409006DD3FA /* Helo-crab-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Helo-crab-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -298,7 +298,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Helo_crab/Preview Content\"";
-				DEVELOPMENT_TEAM = DM7YX3KF59;
+				DEVELOPMENT_TEAM = JZX85Z36BA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Helo-crab-Info.plist";
@@ -328,7 +328,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Helo_crab/Preview Content\"";
-				DEVELOPMENT_TEAM = DM7YX3KF59;
+				DEVELOPMENT_TEAM = JZX85Z36BA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Helo-crab-Info.plist";

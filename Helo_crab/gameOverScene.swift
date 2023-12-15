@@ -23,7 +23,7 @@ class gameOverScene: SKScene {
         addChild(gameOver)
         
         let tapLabel = SKLabelNode()
-        tapLabel.fontName = "SF Pro"
+        tapLabel.fontName = "DigitalDisco"
         tapLabel.position = CGPoint(x: size.width / 2, y: size.height / 4)
         tapLabel.text = "Tap to restart"
         tapLabel.fontSize = 46
