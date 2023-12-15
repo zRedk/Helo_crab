@@ -143,8 +143,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
 
         // Muovi gli sfondi con effetto parallasse verticalmente
-        for (index, background) in backgrounds.enumerated() {
-            let speed = parallaxSpeeds[index]
+        for (_ , background) in backgrounds.enumerated() {
+           
             let yOffset = background.physicsBody?.velocity.dy ?? 0
 
             background.position.y += yOffset
