@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "platform_terra.png",
+      "filename" : "ground.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
