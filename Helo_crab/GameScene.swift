@@ -9,6 +9,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var backgrounds: [SKSpriteNode] = []
     let parallaxSpeeds: [CGFloat] = [0.1, 0.2, 0.3, 0.4] // Velocità degli sfondi
 
+    var maxPlayerHeight: CGFloat = 0.0
+
     
     let background1 = SKSpriteNode(imageNamed: "background1")
     let background2 = SKSpriteNode(imageNamed: "background2")
@@ -21,7 +23,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let player = SKSpriteNode(imageNamed: "crab80x80")
     let ground = SKSpriteNode(imageNamed: "Ground")
     let cameraNode = SKCameraNode()
-    let playerOverTheLine = SKSpriteNode(color: .red, size: CGSize(width: 1000, height: 7))
+    let playerOverTheLine = SKSpriteNode(color: .clear, size: CGSize(width: 1000, height: 7))
     var firstTouch = false
     let scoreLabel = SKLabelNode()
     let bestScoreLabel = SKLabelNode()
@@ -93,8 +95,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(player)
         
-        //Linea per il game over
-        playerOverTheLine.position = CGPoint(x: player.position.x, y: player.position.y - 200)
+        // Linea per il game over
+        updatePlayerOverTheLinePosition()
         playerOverTheLine.zPosition = -10
         playerOverTheLine.physicsBody = SKPhysicsBody(rectangleOf: playerOverTheLine.size)
         playerOverTheLine.physicsBody?.affectedByGravity = false
@@ -159,10 +161,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if player.position.y > lastGeneratedPlatformY - size.height {
             generateNewPlatform()
         }
+        
+        if isMovingUp && player.position.y > maxPlayerHeight {
+            maxPlayerHeight = player.position.y
+        }
+
 
         scoreLabel.position.y = cameraNode.position.y + size.height / 2 - 90
         bestScoreLabel.position.y = cameraNode.position.y + size.height / 2 - 90
         increaseDifficulty()
+        
+        updatePlayerOverTheLinePosition()
+        // Check se il giocatore ha superato la linea rossa
+        if player.position.y < playerOverTheLine.position.y {
+            gameOver()
+        }
     }
 
     
@@ -367,8 +380,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         default:
             physicsWorld.gravity = CGVector(dx: 0, dy: -10.8)
         }
+        
     }
+    
+    
+    func updatePlayerOverTheLinePosition() {
+        let minYPosition = player.position.y - 500
+        playerOverTheLine.position = CGPoint(x: player.position.x, y: max(minYPosition, maxPlayerHeight) - 500)
+    }
+
 }
-
-
 
