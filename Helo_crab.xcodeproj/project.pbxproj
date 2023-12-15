@@ -12,8 +12,9 @@
 		8ED62ED02B21FCEF0027CFAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8ED62ECF2B21FCEF0027CFAF /* Assets.xcassets */; };
 		8ED62ED32B21FCEF0027CFAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8ED62ED22B21FCEF0027CFAF /* Preview Assets.xcassets */; };
 		8ED62EDA2B2201380027CFAF /* StartScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8ED62ED92B2201380027CFAF /* StartScene.sks */; };
-		8EF9418B2B2215F5002F39B2 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF9418A2B2215F5002F39B2 /* GameScene.swift */; };
 		F576AD622B2887A300A76E33 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F576AD612B2887A300A76E33 /* GameOverScene.swift */; };
+		F5D877C92B2C6A89003884B4 /* DigitalDisco.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5D877C42B2C6A89003884B4 /* DigitalDisco.ttf */; };
+		F5F6ECA82B2B54B2006DD3FA /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF9418A2B2215F5002F39B2 /* GameScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,8 @@
 		8ED62ED92B2201380027CFAF /* StartScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartScene.sks; sourceTree = "<group>"; };
 		8EF9418A2B2215F5002F39B2 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		F576AD612B2887A300A76E33 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		F5D877C42B2C6A89003884B4 /* DigitalDisco.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DigitalDisco.ttf; sourceTree = "<group>"; };
+		F5F6ECA72B2B5409006DD3FA /* Helo-crab-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Helo-crab-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,10 +60,12 @@
 		8ED62ECA2B21FCEE0027CFAF /* Helo_crab */ = {
 			isa = PBXGroup;
 			children = (
+				F5F6ECA72B2B5409006DD3FA /* Helo-crab-Info.plist */,
 				8ED62ECB2B21FCEE0027CFAF /* Helo_crabApp.swift */,
 				8ED62ECD2B21FCEE0027CFAF /* ContentView.swift */,
 				8EF9418A2B2215F5002F39B2 /* GameScene.swift */,
 				F576AD612B2887A300A76E33 /* GameOverScene.swift */,
+				F5F6ECA42B2B5302006DD3FA /* Fonts */,
 				8ED62ED92B2201380027CFAF /* StartScene.sks */,
 				8ED62ECF2B21FCEF0027CFAF /* Assets.xcassets */,
 				8ED62ED12B21FCEF0027CFAF /* Preview Content */,
@@ -74,6 +79,14 @@
 				8ED62ED22B21FCEF0027CFAF /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		F5F6ECA42B2B5302006DD3FA /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				F5D877C42B2C6A89003884B4 /* DigitalDisco.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,6 +147,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5D877C92B2C6A89003884B4 /* DigitalDisco.ttf in Resources */,
 				8ED62EDA2B2201380027CFAF /* StartScene.sks in Resources */,
 				8ED62ED32B21FCEF0027CFAF /* Preview Assets.xcassets in Resources */,
 				8ED62ED02B21FCEF0027CFAF /* Assets.xcassets in Resources */,
@@ -148,8 +162,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F576AD622B2887A300A76E33 /* GameOverScene.swift in Sources */,
-				8EF9418B2B2215F5002F39B2 /* GameScene.swift in Sources */,
 				8ED62ECE2B21FCEE0027CFAF /* ContentView.swift in Sources */,
+				F5F6ECA82B2B54B2006DD3FA /* GameScene.swift in Sources */,
 				8ED62ECC2B21FCEE0027CFAF /* Helo_crabApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,6 +301,7 @@
 				DEVELOPMENT_TEAM = JZX85Z36BA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Helo-crab-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.arcade-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -316,6 +331,7 @@
 				DEVELOPMENT_TEAM = JZX85Z36BA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Helo-crab-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.arcade-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

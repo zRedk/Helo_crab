@@ -107,7 +107,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.position.x = 70
         scoreLabel.zPosition = 20
         scoreLabel.fontSize = 22
-        scoreLabel.fontName = "SF Pro"
+        scoreLabel.fontName = "DigitalDisco"
         scoreLabel.fontColor = .white
         scoreLabel.text = "Score: \(score)"
         addChild(scoreLabel)
@@ -116,7 +116,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bestScoreLabel.position.x = 300
         bestScoreLabel.zPosition = 20
         bestScoreLabel.fontSize = 22
-        bestScoreLabel.fontName = "SF Pro"
+        bestScoreLabel.fontName = "DigitalDisco"
         bestScoreLabel.fontColor = .white
         bestScoreLabel.text = "Best Score: \(bestScore)"
         addChild(bestScoreLabel)
@@ -128,7 +128,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Genera le prime 6 piattaforme
         makePlatform()
-        
         
         
     }
@@ -347,6 +346,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
     }
+    
+    
     
 }
 
