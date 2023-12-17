@@ -49,6 +49,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         
+        let songList = ["Angela.mp3", "HEYYEYAAEYAAAEYAEYAA.mp3", "All_I_Want_For_Christmas_Is_You.mp3", "Los_Pinguinos_x_Last_Christmas.mp3", "Minecraft_Villager_-_Billie_Jean.mp3", "Never_Gonna_Give_You_Up_Voice_Crack.mp3", "shimmy_shimmy_ay_shimmy_ay_shimmy_ya.mp3"]
+        SKTAudio.sharedInstance().playBGMusic(songList)
+        
         //background inizio
         self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.anchorPoint = .zero
@@ -66,16 +69,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         physicsWorld.contactDelegate = self
         
-        ground.position = CGPoint(x: size.width / 2, y: size.height / 65)
+        ground.position = CGPoint(x: size.width / 2, y: size.height / 10)
         ground.zPosition = 5
-        ground.setScale(10)
+        ground.setScale(1)
         ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
         ground.physicsBody?.isDynamic = false
         ground.physicsBody?.allowsRotation = false
         ground.physicsBody?.affectedByGravity = false
         addChild(ground)
         
-        player.position = CGPoint(x: size.width / 2, y: size.height / 5)
+        player.position = CGPoint(x: size.width / 2, y: size.height / 15)
         player.zPosition = 10
         player.setScale(0.5)
         player.physicsBody = SKPhysicsBody(circleOfRadius: player.size.height / 2)
