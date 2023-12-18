@@ -17,6 +17,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let background3 = SKSpriteNode(imageNamed: "background3")
     let background4 = SKSpriteNode(imageNamed: "background4")
     
+    var levelConfiguration: [LevelConfiguration] = [
+        LevelConfiguration(backgroundName: SKSpriteNode(imageNamed: "background1"), platformName: SKSpriteNode(imageNamed: "platform1"), speed: 0.1),
+        LevelConfiguration(backgroundName: SKSpriteNode(imageNamed: "background2"), platformName: SKSpriteNode(imageNamed: "platform2"), speed: 0.2),
+        LevelConfiguration(backgroundName: SKSpriteNode(imageNamed: "background3"), platformName: SKSpriteNode(imageNamed: "platform3"), speed: 0.3),
+        LevelConfiguration(backgroundName: SKSpriteNode(imageNamed: "background4"), platformName: SKSpriteNode(imageNamed: "platform4"), speed: 0.4)
+        
+    ]
+    
     let backgroundNode = SKNode()
     var isTransitioningBackground = false
 
@@ -58,8 +66,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         // Aggiungi gli sfondi al nodo principale degli sfondi con effetto parallasse
         for (index, speed) in parallaxSpeeds.enumerated() {
-            let background = createBackground(imageNamed: "background\(index + 1)", speed: speed, index: index)
-            backgrounds.append(background)
+            let config = levelConfiguration[index]
+            let background = createBackground(config: config, index: index)
+                backgrounds.append(background)
         }
 
         // Aggiungi il nodo principale degli sfondi alla scena
@@ -216,8 +225,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // INIZO
     // Modifica della funzione createBackground
-    func createBackground(imageNamed name: String, speed: CGFloat, index: Int) -> SKSpriteNode {
-        let background = SKSpriteNode(imageNamed: name)
+    func createBackground(config: LevelConfiguration, index: Int) -> SKSpriteNode {
+        let background = SKSpriteNode(imageNamed: config.backgroundName)
         background.zPosition = -1
         background.anchorPoint = CGPoint.zero
         background.alpha = 0.8
@@ -247,9 +256,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         // Aggiungi nuovi sfondi alla fine se necessario
         while let lastBackground = backgrounds.last, lastBackground.position.y < maxY {
-            let newBackground = createBackground(imageNamed: "background4", speed: 0.4, index: backgrounds.count)
-            newBackground.position.y = lastBackground.position.y + lastBackground.size.height
-            backgrounds.append(newBackground)
+            if let config = levelConfiguration.last {
+                let newBackground = createBackground(config: config, index: backgrounds.count)
+                newBackground.position.y = lastBackground.position.y + lastBackground.size.height
+                backgrounds.append(newBackground)
+            }
         }
     }
 
@@ -390,6 +401,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func updatePlayerOverTheLinePosition() {
         let minYPosition = player.position.y - 500
         playerOverTheLine.position = CGPoint(x: player.position.x, y: max(minYPosition, maxPlayerHeight) - 500)
+    }
+    
+    struct LevelConfiguration {
+        var backgroundName: SKSpriteNode
+        var platformName: SKSpriteNode
+        var speed: CGFloat
     }
 
 }
