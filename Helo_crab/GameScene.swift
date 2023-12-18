@@ -49,7 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         
-        let songList = ["Angela.mp3", "HEYYEYAAEYAAAEYAEYAA.mp3", "All_I_Want_For_Christmas_Is_You.mp3", "Los_Pinguinos_x_Last_Christmas.mp3", "Minecraft_Villager_-_Billie_Jean.mp3", "Never_Gonna_Give_You_Up_Voice_Crack.mp3", "shimmy_shimmy_ay_shimmy_ay_shimmy_ya.mp3"]
+        let songList = ["Angela.mp3", "HEYYEYAAEYAAAEYAEYAA.mp3", "All_I_Want_For_Christmas_Is_You.mp3", "Los_Pinguinos_x_Last_Christmas.mp3", "Minecraft_Villager_-_Billie_Jean.mp3", "Never_Gonna_Give_You_Up_Voice_Crack.mp3", "shimmy_shimmy_ay_shimmy_ay_shimmy_ya.mp3", "Peter_Griffin_-_Eye_Of_The_TigerAI_cover.mp3", "Captato.mp3"]
         SKTAudio.sharedInstance().playBGMusic(songList)
         
         //background inizio
@@ -276,9 +276,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func makePlatform() {
-        let platform = SKSpriteNode(imageNamed: "Platform")
+        let platform = SKSpriteNode(imageNamed: "platform5")
         platform.position = CGPoint(x: GKRandomDistribution(lowestValue: Int(size.width * 0.1), highestValue: Int(size.width * 0.9)).nextInt(), y: GKRandomDistribution(lowestValue: 70, highestValue: 150).nextInt() + Int(player.position.y))
-        platform.setScale(2)
+        platform.setScale(1)
         platform.zPosition = 5
         platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
         platform.physicsBody?.isDynamic = false
@@ -304,7 +304,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func generatePlatform(minY: Int, maxY: Int) -> SKSpriteNode {
-            let platform = SKSpriteNode(imageNamed: "Platform")
+            let platform = SKSpriteNode(imageNamed: "platform5")
             
             // Aggiungi una probabilità di generare piattaforme trappola in base allo score
             let trapPlatformProbability = CGFloat(score) / 300.0 // Modifica il valore 100 come preferisci
@@ -313,7 +313,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // Verifica se è una piattaforma trappola e aggiungi il movimento da destra a sinistra
             if isTrapPlatform {
                 
-                platform.texture = SKTexture(imageNamed: "Platform") // Usa l'immagine della piattaforma normale
+                platform.texture = SKTexture(imageNamed: "platform5") // Usa l'immagine della piattaforma normale
                         
                         // Determina se la piattaforma trappola si muove da destra a sinistra o viceversa
                         let movesLeft = Bool.random()
@@ -332,7 +332,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         let moveForever = SKAction.repeatForever(moveSequence)
                         platform.run(moveForever)
             } else {
-                platform.texture = SKTexture(imageNamed: "Platform")
+                platform.texture = SKTexture(imageNamed: "platform5")
             }
             
             // Imposta il posizionamento della piattaforma
@@ -342,7 +342,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             // Imposta la categoria della piattaforma
             platform.zPosition = 5
-            platform.setScale(2)
+            platform.setScale(1)
             platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
             platform.physicsBody?.isDynamic = false
             platform.physicsBody?.allowsRotation = false
